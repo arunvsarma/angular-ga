@@ -17,32 +17,31 @@ export class AnalyticsService {
   app: object = this.globals.application;
   appUser: object = this.globals.user;
   ga: object = this.globals.analytics;
+  dimensionsData: object = {
+    appName: this.app['name'],
+    appUser: this.appUser['ldapId']
+  };
 
   init(): void {
-    gtag(
-      'config',
-      this.ga['trackingId'],
-      {
-        custom_map: {
-          dimension1: 'appName',
-          dimension2: 'appUser'
+    if (this.app['environment'] === 'PRODUCTION') {
+      gtag(
+        'config',
+        this.ga['trackingId'],
+        {
+          custom_map: this.ga['customDimensions']
         }
-      }
-    );
+      );
+    }
   }
 
   sendPageViewEvent(): void {
-    if (gtag) {
-      gtag('event', 'page_view', {
-        appName: this.app['name'],
-        appUser: this.appUser['ldapId']
-      });
-
+    if (this.app['environment'] === 'PRODUCTION') {
+      gtag('event', 'page_view', this.dimensionsData);
     }
   }
 
   sendKeyEvent(eventAction: string, eventCategory: string, eventLabel: string = null, eventValue: number = null): void {
-    if (gtag) {
+    if (this.app['environment'] === 'PRODUCTION') {
       gtag('event', eventAction, {
         event_category: eventCategory,
         event_label: eventLabel,

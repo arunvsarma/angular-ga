@@ -5,7 +5,8 @@ export class Globals {
     constructor(){ }
 
     application = {
-        name: 'Angular8Analytics'
+        name: 'Angular8Analytics',
+        evnironment: 'PRODUCTION'
     };
 
     user = {
@@ -15,8 +16,8 @@ export class Globals {
     analytics = {
         trackingId: '<YOUR TRACKING ID HERE>',
         customDimensions: {
-            appUser: 'dimension1',
-            appName: 'dimension2'
+            dimension1: 'appName',
+            dimension2: 'appUser'
         }
     };
 }
